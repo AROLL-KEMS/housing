@@ -1,0 +1,187 @@
+{% extends "reservation/base.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+<h3 class="mb-4">Dashboard</h3>
+
+
+<!-- ================= SEEKER SECTION (VISIBLE TO ALL USERS) ================= -->
+
+<div class="row mb-4">
+
+<div class="col-md-6">
+<div class="card shadow-sm p-3">
+<h5>My Reservations</h5>
+<h3>{{ seeker_reservations_count }}</h3>
+</div>
+</div>
+
+<div class="col-md-6">
+<div class="card shadow-sm p-3">
+<h5>Approved Visits</h5>
+<h3>{{ approved_reservations }}</h3>
+</div>
+</div>
+
+</div>
+
+
+<h4 class="mb-3">My Reservation Requests</h4>
+
+<div class="table-responsive mb-5">
+
+<table class="table table-striped">
+
+<thead>
+
+<tr>
+<th>Property</th>
+<th>Date</th>
+<th>Time</th>
+<th>Status</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for r in seeker_reservations %}
+
+<tr>
+
+<td>{{ r.property.title }}</td>
+
+<td>{{ r.visit_date }}</td>
+
+<td>{{ r.visit_time }}</td>
+
+<td>
+
+{% if r.status == "PENDING" %}
+<span class="badge bg-warning">Pending</span>
+
+{% elif r.status == "APPROVED" %}
+<span class="badge bg-success">Approved</span>
+
+{% else %}
+<span class="badge bg-danger">Rejected</span>
+{% endif %}
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+<td colspan="4">No reservations yet</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+
+
+<!-- ================= OWNER SECTION ================= -->
+
+{% if is_owner %}
+
+<hr>
+
+<h4 class="mb-4">Owner Overview</h4>
+
+<div class="row mb-4">
+
+<div class="col-md-4">
+<div class="card shadow-sm p-3">
+<h5>Total Properties</h5>
+<h3>{{ properties_count }}</h3>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="card shadow-sm p-3">
+<h5>Reservations on My Properties</h5>
+<h3>{{ owner_reservations_count }}</h3>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="card shadow-sm p-3">
+<h5>Pending Requests</h5>
+<h3>{{ pending_reservations }}</h3>
+</div>
+</div>
+
+</div>
+
+
+<h4 class="mb-3">Recent Reservation Requests</h4>
+
+<div class="table-responsive">
+
+<table class="table table-striped">
+
+<thead>
+<tr>
+<th>Property</th>
+<th>Seeker</th>
+<th>Date</th>
+<th>Status</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for r in owner_reservations %}
+
+<tr>
+
+<td>{{ r.property.title }}</td>
+
+<td>{{ r.seeker.username }}</td>
+
+<td>{{ r.visit_date }}</td>
+
+<td>
+
+{% if r.status == "PENDING" %}
+<span class="badge bg-warning">Pending</span>
+
+{% elif r.status == "APPROVED" %}
+<span class="badge bg-success">Approved</span>
+
+{% else %}
+<span class="badge bg-danger">Rejected</span>
+{% endif %}
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+<td colspan="4">No reservation requests yet</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endif %}
+
+</div>
+
+{% endblock %}

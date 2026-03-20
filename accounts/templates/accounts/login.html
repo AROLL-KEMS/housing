@@ -1,0 +1,81 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+<div class="row justify-content-center">
+
+<div class="col-lg-5 col-md-7">
+
+<div class="text-center mb-4">
+
+<h2>Login to Your Account</h2>
+
+<p class="text-muted">
+Access your dashboard to manage properties or find housing.
+</p>
+
+</div>
+
+<div class="card p-4">
+
+{% if messages %}
+{% for message in messages %}
+
+<div class="alert alert-warning">
+{{ message }}
+</div>
+
+{% endfor %}
+{% endif %}
+
+<form method="POST">
+
+{% csrf_token %}
+
+<div class="mb-3">
+
+<label class="form-label">Username</label>
+
+{{ form.username }}
+
+</div>
+
+<div class="mb-3">
+
+<label class="form-label">Password</label>
+
+{{ form.password }}
+
+</div>
+
+<button type="submit" class="btn btn-primary w-100">
+
+Login
+
+</button>
+
+</form>
+
+</div>
+
+<div class="text-center mt-3">
+
+<p class="text-muted">
+
+Don't have an account?
+
+<a href="{% url 'register' %}">Register here</a>
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

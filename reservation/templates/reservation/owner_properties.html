@@ -1,0 +1,135 @@
+{% extends "reservation/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+<h3>My Properties</h3>
+
+<a href="{% url 'create_property' %}" class="btn btn-primary">
+Add Property
+</a>
+
+</div>
+
+
+<div class="row g-4">
+
+{% for property in properties %}
+
+<div class="col-xl-3 col-lg-4 col-md-6">
+
+<div class="property-card">
+
+<!-- Property Image -->
+
+<div class="property-image">
+
+{% if property.image %}
+<img src="{{ property.image.url }}">
+{% else %}
+<img src="{% static 'reservation/images/default-house.jpg' %}">
+{% endif %}
+
+<span class="price-badge">
+
+{{ property.price }} FCFA
+
+</span>
+
+</div>
+
+
+<!-- Property Content -->
+
+<div class="property-content">
+
+<h5 class="property-title">
+
+{{ property.title }}
+
+</h5>
+
+<p class="property-location">
+
+<i class="fa fa-location-dot"></i>
+{{ property.location }}
+
+</p>
+
+
+<div class="property-features">
+
+<span>
+
+<i class="fa fa-bed"></i>
+{{ property.bedrooms }} Beds
+
+</span>
+
+<span>
+
+<i class="fa fa-bath"></i>
+{{ property.bathrooms }} Baths
+
+</span>
+
+</div>
+
+
+<!-- Owner Action Buttons -->
+
+<div class="property-actions mt-3">
+
+<a href="{% url 'property_detail' property.id %}"
+class="btn btn-outline-primary btn-sm">
+
+Details
+
+</a>
+
+<a href="{% url 'update_property' property.id %}"
+class="btn btn-outline-warning btn-sm">
+
+Edit
+
+</a>
+
+<a href="{% url 'delete_property' property.id %}" 
+   class="btn btn-outline-danger btn-sm" 
+   onclick="return confirm('This will definitely delete this property.')">
+
+   Delete
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% empty %}
+
+<div class="col-12">
+
+<div class="alert alert-info text-center">
+
+You have not added any properties yet.
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,192 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Dashboard | Housing Locator</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="{% static 'reservation/css/base.css' %}">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="dashboard-wrapper">
+
+<!-- =========================
+SIDEBAR
+========================= -->
+
+<div class="sidebar" id="sidebar">
+
+    <div class="sidebar-header">
+
+        <h4>
+            Housing Locator
+        </h4>
+
+        <small>{{ request.user.role }}</small>
+
+    </div>
+
+    <ul class="sidebar-menu">
+
+        <li>
+            <a href="{% url 'dashboard' %}">
+                <i class="fa fa-home"></i> Dashboard
+            </a>
+        </li>
+
+        {% if request.user.role == "OWNER" %}
+
+        <li>
+            <a href="{% url 'owner_properties' %}">
+                <i class="fa fa-building"></i> My Properties
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'create_property' %}">
+                <i class="fa fa-plus"></i> Add Property
+            </a>
+        </li>
+
+        {% endif %}
+
+        <li>
+            <a href="{% url 'manage_reservations' %}">
+                <i class="fa fa-calendar"></i> Tour Requests
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'property_list' %}">
+                <i class="fa fa-search"></i> Browse Properties
+            </a>
+        </li>
+
+        <li>
+            <a href="#">
+                <i class="fa fa-heart"></i> Saved Listings
+            </a>
+        </li>
+
+        <li>
+            <a href="#">
+                <i class="fa fa-calendar"></i> My Visits
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'profile' %}">
+                <i class="fa fa-user"></i> Profile
+            </a>
+        </li>
+
+    </ul>
+
+</div>
+
+
+<!-- =========================
+MAIN AREA
+========================= -->
+
+<div class="main-content">
+
+<!-- HEADER -->
+
+<div class="dashboard-header">
+
+    <!-- Left Side -->
+
+    <div class="header-left">
+
+        <div class="user-info">
+
+            {% if request.user.profile_picture %}
+
+            <img src="{{ request.user.profile_picture.url }}" class="profile-pic">
+
+            {% else %}
+
+            <img src="{% static 'accounts/images/default-profile.png' %}" class="profile-pic">
+
+            {% endif %}
+
+            <div>
+
+                <strong>Welcome, {{ request.user.username }}</strong>
+
+                <small class="text-muted d-block">
+                    <a href="{% url 'home' %}">{{ request.user.role }}</a>
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Right Side -->
+
+    <div class="header-right">
+        <button id="menu-toggle" class="menu-toggle">
+
+            <i class="fa fa-bars"></i>
+
+        </button>
+
+        <a href="{% url 'logout' %}" class="logout-btn">
+
+            <i class="fa fa-sign-out-alt"></i>
+
+        </a>
+
+    </div>
+
+    
+
+</div>
+
+
+<!-- PAGE CONTENT -->
+
+<div class="dashboard-content">
+
+{% block content %}
+
+{% endblock %}
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+const toggle = document.getElementById("menu-toggle")
+const sidebar = document.getElementById("sidebar")
+
+toggle.addEventListener("click", () => {
+
+sidebar.classList.toggle("active")
+
+})
+
+</script>
+
+</body>
+
+</html>

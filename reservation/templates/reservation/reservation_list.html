@@ -1,0 +1,182 @@
+{% extends "reservation/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+<h3 class="mb-4">
+My Reservations
+</h3>
+
+<div class="table-responsive">
+
+<table class="table table-hover align-middle">
+
+<thead class="table-light">
+
+<tr>
+
+<th>Property</th>
+<th>Seeker</th>
+<th>Visit Date</th>
+<th>Visit Time</th>
+<th>Message</th>
+<th>Status</th>
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for reservation in reservations %}
+
+<tr>
+
+<td>
+{{ reservation.property.title }} <br>
+<small class="text-muted">{{ reservation.property.location }}</small>
+</td>
+
+<td>
+{{ reservation.seeker.username }}
+</td>
+
+<td>
+{{ reservation.visit_date }}
+</td>
+
+<td>
+{{ reservation.visit_time }}
+</td>
+
+<td>
+{{ reservation.message|default:"-" }}
+</td>
+
+
+<!-- STATUS BADGE -->
+
+<td>
+
+{% if reservation.status == "PENDING" %}
+
+<span class="badge bg-warning text-dark">
+Pending
+</span>
+
+{% elif reservation.status == "APPROVED" %}
+
+<span class="badge bg-success">
+Approved
+</span>
+
+{% elif reservation.status == "REJECTED" %}
+
+<span class="badge bg-danger">
+Rejected
+</span>
+
+{% endif %}
+
+</td>
+
+
+<!-- ACTIONS -->
+
+<td>
+
+<!-- OWNER ACTIONS -->
+
+{% if request.user == reservation.property.owner %}
+
+{% if reservation.status == "PENDING" %}
+
+<form method="POST" class="d-inline">
+
+{% csrf_token %}
+
+<input type="hidden" name="reservation_id"
+value="{{ reservation.id }}">
+
+<input type="hidden" name="action"
+value="approve">
+
+<button class="btn btn-sm btn-success">
+
+Approve
+
+</button>
+
+</form>
+
+
+<form method="POST"
+class="d-inline"
+onsubmit="return confirm('Are you sure you want to reject this reservation?');">
+
+{% csrf_token %}
+
+<input type="hidden" name="reservation_id"
+value="{{ reservation.id }}">
+
+<input type="hidden" name="action"
+value="reject">
+
+<button class="btn btn-sm btn-danger">
+
+Reject
+
+</button>
+
+</form>
+
+{% endif %}
+
+{% endif %}
+
+
+
+<!-- SEEKER WHATSAPP BUTTON -->
+
+{% if reservation.status == "APPROVED" %}
+
+<a href="https://wa.me/{{ reservation.property.owner.phone_number }}"
+target="_blank"
+class="btn btn-success btn-sm">
+
+Chat on WhatsApp
+
+</a>
+
+{% endif %}
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="7" class="text-center text-muted">
+
+No reservations found.
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+{% endblock %}

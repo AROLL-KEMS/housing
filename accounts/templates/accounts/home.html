@@ -1,0 +1,192 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+
+<!-- HERO SECTION -->
+<section class="hero-section text-center text-white">
+
+<div class="container">
+
+<h1 class="display-5 fw-bold">
+Find Your Perfect Home
+</h1>
+
+<p class="lead">
+Search houses, apartments, rooms and commercial spaces easily.
+</p>
+
+<!-- SEARCH BAR -->
+<div class="search-box mt-4">
+
+<form method="GET" action="{% url 'property_list' %}">
+<div class="row g-2">
+
+<div class="col-md-4">
+<input type="text"
+name="location"
+class="form-control"
+placeholder="Enter Location">
+</div>
+
+<div class="col-md-3">
+<select name="type" class="form-control">
+
+<option value="">Property Type</option>
+<option>House</option>
+<option>Apartment</option>
+<option>Room</option>
+<option>Commercial</option>
+
+</select>
+</div>
+
+<div class="col-md-3">
+<input type="number"
+name="price"
+class="form-control"
+placeholder="Max Price">
+</div>
+
+<div class="col-md-2">
+<button class="btn btn-primary w-100">
+Search
+</button>
+</div>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- FEATURED PROPERTIES -->
+<section class="mt-5">
+
+<div class="container">
+
+<h3 class="mb-4">
+Featured Properties
+</h3>
+
+<div class="row">
+
+{% for property in properties %}
+
+<div class="col-md-4 mb-4">
+
+<div class="card property-card">
+
+<img src="{{ property.image.url }}" class="card-img-top">
+
+<div class="card-body">
+
+<h5 class="card-title">
+{{ property.title }}
+</h5>
+
+<p class="text-muted">
+📍 {{ property.location }}
+</p>
+
+<h6 class="text-primary">
+${{ property.price }}
+</h6>
+
+<a href="{% url 'property_detail' property.id %}" 
+class="btn btn-outline-primary w-100 mt-2">
+
+View Details
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+</section>
+
+<!-- WHY USE OUR PLATFORM -->
+<section class="mt-5 py-5 bg-light">
+
+<div class="container text-center">
+
+<h3 class="mb-4">
+Why Choose Our Platform
+</h3>
+
+<div class="row">
+
+<div class="col-md-4">
+
+<h5>Verified Owners</h5>
+
+<p>
+All property owners are verified to ensure trust and security.
+</p>
+
+</div>
+
+<div class="col-md-4">
+
+<h5>Easy Property Search</h5>
+
+<p>
+Search houses by location, price and property type.
+</p>
+
+</div>
+
+<div class="col-md-4">
+
+<h5>Schedule Property Tours</h5>
+
+<p>
+Book property visits directly from the platform.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- CALL TO ACTION -->
+<section class="mt-5">
+
+<div class="container text-center">
+
+<div class="cta-box p-5">
+
+<h3>
+Are You a Property Owner?
+</h3>
+
+<p>
+List your property and reach thousands of seekers.
+</p>
+
+<a href="{% url 'register' %}" class="btn btn-primary">
+List Your Property
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+{% endblock %}

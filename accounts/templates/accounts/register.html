@@ -1,0 +1,159 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+<div class="row justify-content-center">
+
+<div class="col-lg-7 col-md-9">
+
+<div class="text-center mb-4">
+
+<h2>Create Your Account</h2>
+
+<p class="text-muted">
+Join the Housing Locator platform to find or list properties easily.
+</p>
+
+</div>
+
+
+<div class="card p-4">
+{% if form.errors %}
+    <div class="alert alert-danger">
+        <strong>There was an error with your submission:</strong>
+        <ul>
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <li>{{ field.label }}: {{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+<form method="POST" enctype="multipart/form-data">
+
+{% csrf_token %}
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">Username</label>
+
+{{ form.username }}
+
+</div>
+
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">Email Address</label>
+
+{{ form.email }}
+
+</div>
+
+</div>
+
+
+<div class="mb-3">
+
+<label class="form-label">Password</label>
+
+{{ form.password }}
+
+</div>
+
+
+<div class="mb-3">
+
+<label class="form-label">Account Type</label>
+
+{{ form.role }}
+
+<small class="text-muted">
+Choose whether you are a property seeker or property owner.
+</small>
+
+</div>
+
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">Phone Number</label>
+
+{{ form.phone_number }}
+
+</div>
+
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">Address</label>
+
+{{ form.address }}
+
+</div>
+
+</div>
+
+
+<div class="mb-3">
+
+<label class="form-label">Profile Picture</label>
+
+{{ form.profile_picture }}
+
+</div>
+
+
+<div class="mb-3">
+
+<label class="form-label">Upload ID Card</label>
+
+{{ form.id_card }}
+
+<small class="text-muted">
+This is required for account verification.
+</small>
+
+</div>
+
+
+<button type="submit" class="btn btn-primary w-100 mt-2">
+
+Create Account
+
+</button>
+
+</form>
+
+</div>
+
+
+<div class="text-center mt-3">
+
+<p class="text-muted">
+
+Already have an account?
+
+<a href="{% url 'login' %}">Login here</a>
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,155 @@
+{% extends "reservation/base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+<h3 class="mb-3">
+{{ property.title }}
+</h3>
+
+<p class="text-muted mb-4">
+📍 {{ property.location }}
+</p>
+
+
+<div class="row">
+
+<!-- PROPERTY DETAILS -->
+<div class="col-md-8">
+
+<h4 class="mb-3">
+Property Details
+</h4>
+
+<div class="card p-3 mb-4">
+
+<div class="row">
+
+<div class="col-md-4 mb-2">
+<strong>Price</strong><br>
+{{ property.price }} FCFA
+</div>
+
+<div class="col-md-4 mb-2">
+<strong>Area</strong><br>
+{{ property.area }} m²
+</div>
+
+<div class="col-md-4 mb-2">
+<strong>Bedrooms</strong><br>
+{{ property.bedrooms }}
+</div>
+
+<div class="col-md-4 mt-3">
+<strong>Bathrooms</strong><br>
+{{ property.bathrooms }}
+</div>
+
+</div>
+
+</div>
+
+
+<h5>Description</h5>
+
+<p>
+{{ property.description }}
+</p>
+
+</div>
+
+</div>
+
+
+<hr class="mt-5">
+
+
+<h4 class="mb-4">
+Property Images
+</h4>
+
+
+<div class="row">
+
+{% for img in property.images.all %}
+
+<div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+
+<div class="card">
+
+<img src="{{ img.image.url }}"
+class="img-fluid rounded-top"
+style="height:180px; object-fit:cover;">
+
+{% if request.user == property.owner %}
+
+<div class="card-body p-2">
+    <form method="POST" action="{% url 'delete_property_image' img.id %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" 
+                class="btn btn-danger btn-sm w-100" 
+                onclick="return confirm('Are you sure to delete this image ?')">
+            Delete Image
+        </button>
+    </form>
+</div>
+
+{% endif %}
+
+</div>
+
+</div>
+
+{% empty %}
+
+<p class="text-muted">
+No images uploaded yet.
+</p>
+
+{% endfor %}
+
+</div>
+
+
+{% if request.user == property.owner %}
+
+<hr class="mt-5">
+
+
+<h4 class="mb-3">
+Add New Image
+</h4>
+
+<div class="card p-3">
+
+<form method="POST"
+enctype="multipart/form-data"
+action="{% url 'add_property_image' property.id %}">
+
+{% csrf_token %}
+
+<div class="mb-3">
+
+<input type="file"
+name="image"
+class="form-control"
+required>
+
+</div>
+
+<button class="btn btn-primary">
+
+Upload Image
+
+</button>
+
+</form>
+
+</div>
+
+{% endif %}
+
+</div>
+
+{% endblock %}
