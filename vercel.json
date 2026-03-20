@@ -7,18 +7,20 @@
       "config": { "runtime": "python3.12" }
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/static/(.*)",
-      "dest": "static/$1"
+      "source": "/static/(.*)",
+      "destination": "/static/$1"
     },
     {
-      "src": "/media/(.*)",
-      "dest": "https://your-external-storage.com/media/$1"
-    },
+      "source": "/(.*)",
+      "destination": "immocam/wsgi.py"
+    }
+  ],
+  "redirects": [
     {
-      "src": "/(.*)",
-      "dest": "immocam/wsgi.py"
+      "source": "/media/(.*)",
+      "destination": "/media/$1"
     }
   ]
 }
